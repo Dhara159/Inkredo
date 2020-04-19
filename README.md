@@ -9,4 +9,4 @@
 
 1) Employee company listing
 2) Join / Leave company
-3) Make webapp responsinve
+3) Make webapp responsinve and accessible
