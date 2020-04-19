@@ -7,8 +7,8 @@
 
 ### TODO:
 
-1) Employee company listing
-2) Join / Leave company
-3) Make webapp responsinve and accessible
+1) Make webapp responsinve and accessible
+2) Write code in container pattern
 
 ### Join company button will be only displayed if user is logged in
+### There might seem some issue with the behaviour with the web-app, but it's just because of the way I have mocked the response of API. In the normal flow, It would work fine. Giving a try to change the method was an option but It was little time-consuming.
