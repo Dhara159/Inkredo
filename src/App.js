@@ -51,17 +51,19 @@ function App() {
       <Switch>
         <ErrorBoundary>
           <Suspense fallback={<Spinner />}>
-            <Route path="/signin" exact
-              render={() =>
-                currentUser ? (
-                  <Redirect to='/' />
-                ) : (
-                    <SignInAndSignUp />
-                  )
-              }
-            />
-            <Route component={List} path="/companies/:company" exact />
-            <Route component={Home} path="/" exact />
+            <CurrentUserContext.Provider value={currentUser}>
+              <Route path="/signin" exact
+                render={() =>
+                  currentUser ? (
+                    <Redirect to='/' />
+                  ) : (
+                      <SignInAndSignUp />
+                    )
+                }
+              />
+              <Route component={List} path="/companies/:company" exact />
+              <Route component={Home} path="/" exact />
+            </CurrentUserContext.Provider>
           </Suspense>
         </ErrorBoundary>
       </Switch>

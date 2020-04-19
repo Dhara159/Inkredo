@@ -9,13 +9,12 @@ import './Card.styles.jsx';
 const Card = ({ company: { name, id, employees }, history, match }) => {
 
   const currentUser = useContext(CurrentUserContext);
-  console.log(currentUser);
 
   const joinCompany = () => {
     const companies = JSON.parse(localStorage.getItem('companies'));
     const { employees: data } = companies.find(({ id: companyId }) => id === companyId);
 
-    // Update employees list when new employee will join company
+    // update employee list
 
   }
 
@@ -33,8 +32,7 @@ const Card = ({ company: { name, id, employees }, history, match }) => {
       </div>
       <div className="buttons">
         <ListButton onClick={listEmployees}>EMPLOYEES</ListButton>
-        {/* Display join button if employee is logged in */}
-        <JoinButton onClick={joinCompany}>JOIN + </JoinButton>
+        {currentUser ? <JoinButton onClick={joinCompany}>JOIN + </JoinButton> : null}
       </div>
     </CardContainer>
   );
