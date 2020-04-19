@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import {
   TableHeaderCellContainer,
@@ -13,4 +13,4 @@ const TableCell = ({ value, header }) => {
   return td;
 };
 
-export default TableCell;
+export default memo(TableCell);

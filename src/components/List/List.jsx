@@ -18,7 +18,7 @@ const renderBodyRow = (row, rowIndex) => {
     <tr key={`row_${rowIndex}`}>
       {
         values.map((cell, cellIndex) => {
-          const value = typeof (cell) === 'boolean' ? row.endDate ? 'YES' : 'NO' : cell;
+          const value = typeof (cell) === 'boolean' ? row.endDate ? 'YES' : 'NO' : cellIndex === 0 ? rowIndex + 1 : cell;
           return (<TableCell
             key={`row_${rowIndex}_${cellIndex}`}
             value={value}
@@ -37,15 +37,14 @@ const theadMarkup = (headers) => (
 );
 
 const tbodyMarkup = (data) => data.map(renderBodyRow);
-const List = ({ location: { state: { companyId } } }) => {
-  const companies = JSON.parse(localStorage.getItem('companies'));
-  const { employees: data } = companies.find(({ id }) => id === companyId);
-  const headers = ["id", "name", "email", "join date", "end date", "past employee"]
+
+const List = ({ location: { state: { title, headers, data } } }) => {
+
   const toBeReturned = data.length > 0 ?
     (
       <>
         <TableTitle>
-          <H1Title>EMPLOYEES</H1Title>
+          <H1Title>{title}</H1Title>
         </TableTitle>
         <TableContainer>
           <thead>

@@ -15,6 +15,7 @@ import CurrentUserContext from './contexts/CurrentUser/CurrentUser';
 
 const List = lazy(() => import('./components/List/List'));
 const SignInAndSignUp = lazy(() => import('./pages/SignInAndSignUp/SignInAndSignUp'));
+const Employee = lazy(() => import('./pages/Employee/Employee'));
 
 function App() {
 
@@ -40,7 +41,7 @@ function App() {
 
   useEffect(() => {
     return () => unsubscribeFromAuth();
-  }, [unsubscribeFromAuth])
+  }, [])
 
   return (
     <div className="App">
@@ -61,6 +62,7 @@ function App() {
                     )
                 }
               />
+              <Route component={Employee} path="/mycompanies" exact />
               <Route component={List} path="/companies/:company" exact />
               <Route component={Home} path="/" exact />
             </CurrentUserContext.Provider>

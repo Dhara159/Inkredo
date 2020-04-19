@@ -21,7 +21,7 @@ export const CardName = styled.h2`
   display: inline-block;
 `;
 
-export const TotalEmployees = styled.p`
+export const ExtraDetails = styled.p`
   float: right;
   padding-top: 10px;
 `;

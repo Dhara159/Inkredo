@@ -11,15 +11,24 @@ const Header = () => {
   return (<HeaderContainer>
     <OptionsContainer>
       <OptionLink to='/'>COMPANIES</OptionLink>
-      {currentUser ? (
-        <OptionLink to='/' onClick={() => auth.signOut()}>
-          SIGN OUT
+      {
+        currentUser ?
+          <OptionLink to='/mycompanies'>
+            MY COMPANIES
         </OptionLink>
-      ) : (
-          <OptionLink to='/signin'>
-            SIGN IN
+          : null
+      }
+      {
+        currentUser ? (
+          <OptionLink to='/' onClick={() => auth.signOut()}>
+            SIGN OUT
           </OptionLink>
-        )}
+        ) : (
+            <OptionLink to='/signin'>
+              SIGN IN
+            </OptionLink>
+          )
+      }
     </OptionsContainer>
   </HeaderContainer>)
 };

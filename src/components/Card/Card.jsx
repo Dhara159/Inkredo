@@ -1,39 +1,60 @@
-import React, { memo, useContext } from 'react';
+import React, { memo, useContext, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import CurrentUserContext from './../../contexts/CurrentUser/CurrentUser';
+import { joinOrLeaveCompany, alreadyJoined, countDuration } from './Card.utils';
 
-import { CardContainer, CardName, JoinButton, ListButton, TotalEmployees } from './Card.styles.jsx';
-import './Card.styles.jsx';
+import { CardContainer, CardName, JoinButton, ListButton, ExtraDetails } from './Card.styles';
 
-const Card = ({ company: { name, id, employees }, history, match }) => {
+const Card = ({ company, history, match, userCompany }) => {
+  const { name, id, employees } = company;
 
+  const [newEmployees, updateEmployees] = useState(employees);
   const currentUser = useContext(CurrentUserContext);
 
-  const joinCompany = () => {
+  const listEmployees = (event) => {
     const companies = JSON.parse(localStorage.getItem('companies'));
     const { employees: data } = companies.find(({ id: companyId }) => id === companyId);
-
-    // update employee list
-
-  }
-
-  const listEmployees = (event) => {
-    history.push({ pathname: `${match.url}companies/${name}`, state: { companyId: id } });
+    history.push({
+      pathname: `${match.url}companies/${name}`,
+      state: {
+        companyId: id,
+        title: 'EMPLOYEES',
+        headers: ["id", "name", "email", "join date", "end date", "past employee"],
+        data
+      }
+    });
     event.stopPropagation();
   }
+
+  const data = (currentUser && newEmployees && alreadyJoined({ userId: currentUser.id, newEmployees })) || [];
 
   return (
     <CardContainer>
       <img src={`https://robohash.org/${id}?set=set2&size=180x180`} alt="company" />
       <div>
         <CardName> {name} </CardName>
-        <TotalEmployees>Employees: {employees.length}</TotalEmployees>
+        {
+          userCompany ?
+            <ExtraDetails>Duration: {`${countDuration({ companyId: id, userId: currentUser.id })} Days`}</ExtraDetails>
+            :
+            <ExtraDetails>Employees: {newEmployees.length}</ExtraDetails>
+        }
       </div>
-      <div className="buttons">
-        <ListButton onClick={listEmployees}>EMPLOYEES</ListButton>
-        {currentUser ? <JoinButton onClick={joinCompany}>JOIN + </JoinButton> : null}
-      </div>
+      {
+        !userCompany ? (
+          <div className="buttons">
+            <ListButton onClick={listEmployees}>EMPLOYEES</ListButton>
+            {currentUser ?
+              <JoinButton onClick={() => joinOrLeaveCompany({ currentUser, updateEmployees, id, newEmployees })}>
+                {
+                  data.length > 0 && !(data[0].endDate) ? 'Leave -' : 'Join +'
+                }
+              </JoinButton>
+              : null}
+          </div>
+        ) : null
+      }
     </CardContainer>
   );
 };

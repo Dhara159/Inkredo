@@ -9,7 +9,7 @@ const Home = () => {
   const [companies, setCompanies] = useState([]);
   useEffect(() => {
     const fectchCompanies = async () => {
-      const companies = await axios.get('https://my.api.mockaroo.com/allCompanies?key=6ce59450');
+      const companies = await axios.get('https://my.api.mockaroo.com/companies?key=9707c930');
       setCompanies(companies.data);
     };
     fectchCompanies();
@@ -24,7 +24,7 @@ const Home = () => {
       <Title>
         <H1Title>COMPANIES</H1Title>
       </Title>
-      <CardList className="card-list" companies={companies} />
+      <CardList companies={companies} />
     </div>)
   )
 };

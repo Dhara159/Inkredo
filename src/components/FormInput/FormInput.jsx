@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { GroupContainer, FormInputContainer, FormInputLabel } from './FormInput.styles';
 
@@ -13,4 +13,4 @@ const FormInput = ({ handleChange, label, ...props }) => (
   </GroupContainer>
 );
 
-export default FormInput;
+export default memo(FormInput);
