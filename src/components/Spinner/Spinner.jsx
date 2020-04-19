@@ -1,14 +1,11 @@
 import React from 'react';
-import './Spinner.scss';
+
+import { SpinnerOverlay, SpinnerContainer } from './Spinner.styles'
 
 const Spinner = () => (
-  <div className="SpinnerOverlay">
-    <div className="SpinnerContainer" />
-  </div>
+  <SpinnerOverlay>
+    <SpinnerContainer />
+  </SpinnerOverlay>
 );
-
-Spinner.propTypes = {};
-
-Spinner.defaultProps = {};
 
 export default Spinner;

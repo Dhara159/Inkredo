@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './ErrorBoundary.scss';
+import { ErrorImageContainer, ErrorImageOverlay, ErrorImageText } from './ErrorBoundary.styles';
 
 class ErrorBoundary extends React.Component {
   constructor() {
@@ -22,10 +22,10 @@ class ErrorBoundary extends React.Component {
   render() {
     return this.state.hasErrored ?
       (
-        <div className="ErrorImageOverlay">
-          <div className="ErrorImageContainer"></div>
-          <h2 className="ErrorImageText"> Oops, you found a broken page <span role='img' area-label='error-display'> &#9888; </span> </h2>
-        </div>
+        <ErrorImageOverlay>
+          <ErrorImageContainer />
+          <ErrorImageText> Oops, you found a broken page <span role='img' area-label='error-display'> &#9888; </span> </ErrorImageText>
+        </ErrorImageOverlay>
       ) :
       this.props.children;
   }

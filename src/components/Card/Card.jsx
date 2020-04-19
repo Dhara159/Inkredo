@@ -1,38 +1,43 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { memo, useContext } from 'react';
+import { withRouter } from 'react-router-dom';
 
-import UserContext from '../../context/UserContext';
-import './Card.scss';
+import CurrentUserContext from './../../contexts/CurrentUser/CurrentUser';
 
-const Card = () => {
-  const [searchQuery, setSearchQuery] = useState('Bret');
-  const { updateUser, user } = useContext(UserContext);
-  useEffect(() => {
-    const fetchFunc = async () => {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/users?username=${searchQuery}`);
-      const resJson = await response.json();
-      updateUser(resJson[0]);
-    };
-    fetchFunc();
-  }, [searchQuery, updateUser]);
+import { CardContainer, CardName, JoinButton, ListButton, TotalEmployees } from './Card.styles.jsx';
+import './Card.styles.jsx';
+
+const Card = ({ company: { name, id, employees }, history, match }) => {
+
+  const currentUser = useContext(CurrentUserContext);
+  console.log(currentUser);
+
+  const joinCompany = () => {
+    const companies = JSON.parse(localStorage.getItem('companies'));
+    const { employees: data } = companies.find(({ id: companyId }) => id === companyId);
+
+    // Update employees list when new employee will join company
+
+  }
+
+  const listEmployees = (event) => {
+    history.push({ pathname: `${match.url}companies/${name}`, state: { companyId: id } });
+    event.stopPropagation();
+  }
 
   return (
-    <div className='Card'>
-      <input
-        type='search'
-        value={searchQuery}
-        onChange={event => setSearchQuery(event.target.value)}
-      />
-      {user ? (
-        <div>
-          <h3>{user.name}</h3>
-          <h3> {user.username} </h3>
-          <h3> {user.email} </h3>
-        </div>
-      ) : (
-          <p>No user found</p>
-        )}
-    </div>
+    <CardContainer>
+      <img src={`https://robohash.org/${id}?set=set2&size=180x180`} alt="company" />
+      <div>
+        <CardName> {name} </CardName>
+        <TotalEmployees>Employees: {employees.length}</TotalEmployees>
+      </div>
+      <div className="buttons">
+        <ListButton onClick={listEmployees}>EMPLOYEES</ListButton>
+        {/* Display join button if employee is logged in */}
+        <JoinButton onClick={joinCompany}>JOIN + </JoinButton>
+      </div>
+    </CardContainer>
   );
 };
 
-export default Card;
+export default memo(withRouter(Card));
