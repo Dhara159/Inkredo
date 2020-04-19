@@ -10,3 +10,5 @@
 1) Employee company listing
 2) Join / Leave company
 3) Make webapp responsinve and accessible
+
+### Join company button will be only displayed if user is logged in
