@@ -20,7 +20,7 @@ const List = ({ location: { state: { title, headerMapping, data, alterValue } } 
       <tr key={`row_${rowIndex}`}>
         {displayHeader.map((header, headerIndex) => {
           const keyName = headerMapping[header];
-          const value = typeof (row[keyName]) === 'boolean' ? ((row[keyName] && 'YES')) || 'NO' : (headerIndex === 0 ? headerIndex : row[keyName])
+          const value = typeof (row[keyName]) === 'boolean' ? ((row[keyName] && 'YES')) || 'NO' : (headerIndex === 0 ? rowIndex + 1 : (row[keyName] || '--'));
           return <TableCell key={`row_${rowIndex}_${headerIndex}`} value={value} />
         })}
       </tr>

@@ -6,9 +6,7 @@ import { joinOrLeaveCompany, alreadyJoined, countDuration } from './Card.utils';
 
 import { CardContainer, CardName, JoinButton, ListButton, ExtraDetails } from './Card.styles';
 
-const Card = ({ company, history, match, userCompany }) => {
-  const { name, id, employees } = company;
-
+const Card = ({ company: { name, id, employees }, history, match, userCompany }) => {
   const [newEmployees, updateEmployees] = useState(employees);
   const currentUser = useContext(CurrentUserContext);
 
