@@ -1,3 +1,5 @@
+### LIVE APP: https://crwn-db-f6657.firebaseapp.com/
+
 ### STEPS:
 
 1) clone repo using command: https://github.com/Dhara159/Inkredo.git
