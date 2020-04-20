@@ -12,7 +12,7 @@
 - [x] Add employee's history listing
 - [x] Add Join/Leave functionality for an employee
 - [x] Add Private route of employee dashboard
-- [ ] Use Firebase database instead of mock API
+- [x] Use Firebase database instead of mock API
 - [ ] Add responsiveness and accesibility
 - [ ] Write code in container pattern
 
