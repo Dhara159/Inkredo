@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import FormInput from '../FormInput/FormInput';
 import CustomButton from './../CustomButton/CustomButton';
@@ -7,7 +8,7 @@ import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
 import { SignUpContainer, SignUpTitle } from './SignUp.styles';
 
-const SignUp = () => {
+const SignUp = ({ history }) => {
 
   const [userCredentials, setCredentials] = useState({
     displayName: '',
@@ -33,13 +34,14 @@ const SignUp = () => {
       );
 
       await createUserProfileDocument(user, { displayName });
-      setCredentials({
+      await setCredentials({
         ...userCredentials,
         displayName: '',
         email: '',
         password: '',
         confirmPassword: ''
       });
+      history.push('/');
     } catch (error) {
       alert(error);
     }
@@ -94,4 +96,4 @@ const SignUp = () => {
   )
 };
 
-export default SignUp;
+export default withRouter(SignUp);

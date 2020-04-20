@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import CardList from './../../components/CardList/CardList';
-import Spinner from './../../components/Spinner/Spinner';
-import CurrentUserContext from './../../contexts/CurrentUser/CurrentUser';
 import { getDataFromStorage } from '../../utils';
 import { formatCompanyDetails } from './Employee.utils';
 
@@ -21,12 +19,4 @@ const Employee = ({ currentUser }) => {
   </div>);
 };
 
-const WithEmployee = () => {
-  const currentUser = useContext(CurrentUserContext);
-  return currentUser ? (
-    <Employee currentUser={currentUser} />
-  ) : <Spinner />
-}
-
-
-export default WithEmployee;
+export default Employee;

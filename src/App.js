@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import Spinner from './components/Spinner/Spinner';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Header from './components/Header/Header';
-import Home from './pages/Home/Home';
+import HomeContainer from './pages/Home/Home.container';
 
 import { GlobalStyle } from './global.styles';
 
@@ -16,7 +16,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 const List = lazy(() => import('./components/List/List'));
 const SignInAndSignUp = lazy(() => import('./pages/SignInAndSignUp/SignInAndSignUp'));
-const Employee = lazy(() => import('./pages/Employee/Employee'));
+const Employee = lazy(() => import('./pages/Employee/Employee.container'));
 
 function App() {
 
@@ -57,7 +57,7 @@ function App() {
               <PrivateRoute inverted currentUser={currentUser} component={SignInAndSignUp} path="/signin" exact />
               <PrivateRoute currentUser={currentUser} component={Employee} path="/mycompanies" exact />
               <Route component={List} path="/companies/:company" exact />
-              <Route component={Home} path="/" exact />
+              <Route component={HomeContainer} path="/" exact />
             </CurrentUserContext.Provider>
           </Suspense>
         </ErrorBoundary>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import { SignInContainer, SignInTitle, ButtonsBarContainer } from './SignIn.styles';
 
@@ -7,7 +8,7 @@ import CustomButton from './../CustomButton/CustomButton';
 
 import { auth } from '../../firebase/firebase.utils';
 
-const SignIn = () => {
+const SignIn = ({ history }) => {
 
   const [userCredentials, setCredentials] = useState({ email: '', password: '' });
 
@@ -18,7 +19,8 @@ const SignIn = () => {
 
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      setCredentials({ ...userCredentials, displayName: '', email: '', password: '' });
+      await setCredentials({ ...userCredentials, displayName: '', email: '', password: '' });
+      history.push('/');
     } catch (error) {
       alert(error.message);
     }
@@ -60,4 +62,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default withRouter(SignIn);
