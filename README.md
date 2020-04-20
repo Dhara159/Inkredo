@@ -1,3 +1,5 @@
+### LIVE APP: https://crwn-db-f6657.firebaseapp.com/
+
 ### STEPS:
 
 1) clone repo using command: https://github.com/Dhara159/Inkredo.git
@@ -7,8 +9,12 @@
 
 ### TODO:
 
-1) Make webapp responsinve and accessible
-2) Write code in container pattern
+- [x] Add employee's history listing
+- [x] Add Join/Leave functionality for an employee
+- [x] Add Private route of employee dashboard
+- [ ] Use Firebase database instead of mock API
+- [ ] Add responsiveness and accesibility
+- [ ] Write code in container pattern
 
 ### Notes:
 1) Join company button will be only displayed if user is logged in
