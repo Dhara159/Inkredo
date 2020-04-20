@@ -9,9 +9,12 @@
 
 ### TODO:
 
-1) Make webapp responsinve and accessible
-2) Write code in container pattern
-3) Add Firebase database
+- [x] Add employee's history listing
+- [x] Add Join/Leave functionality for an employee
+- [x] Add Private route of employee dashboard
+- [ ] Use Firebase database instead of mock API
+- [ ] Add responsiveness and accesibility
+- [ ] Write code in container pattern
 
 ### Notes:
 1) Join company button will be only displayed if user is logged in
