@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Suspense, lazy, useState, useEffect } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import Spinner from './components/Spinner/Spinner';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
@@ -12,6 +12,7 @@ import { GlobalStyle } from './global.styles';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import CurrentUserContext from './contexts/CurrentUser/CurrentUser';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 const List = lazy(() => import('./components/List/List'));
 const SignInAndSignUp = lazy(() => import('./pages/SignInAndSignUp/SignInAndSignUp'));
@@ -53,16 +54,8 @@ function App() {
         <ErrorBoundary>
           <Suspense fallback={<Spinner />}>
             <CurrentUserContext.Provider value={currentUser}>
-              <Route path="/signin" exact
-                render={() =>
-                  currentUser ? (
-                    <Redirect to='/' />
-                  ) : (
-                      <SignInAndSignUp />
-                    )
-                }
-              />
-              <Route component={Employee} path="/mycompanies" exact />
+              <PrivateRoute inverted currentUser={currentUser} component={SignInAndSignUp} path="/signin" exact />
+              <PrivateRoute currentUser={currentUser} component={Employee} path="/mycompanies" exact />
               <Route component={List} path="/companies/:company" exact />
               <Route component={Home} path="/" exact />
             </CurrentUserContext.Provider>
