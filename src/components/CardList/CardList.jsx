@@ -8,7 +8,7 @@ export const CardList = ({ companies, userCompany }) => {
 
   return (<CardListContainer>
     {
-      companies.map(company => <Card userCompany={userCompany} key={company.id} company={company} />)
+      companies.map((company, index) => <Card userCompany={userCompany} key={company.id} company={company} indexOfCompany={index} />)
     }
   </CardListContainer>)
 };

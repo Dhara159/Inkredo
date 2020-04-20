@@ -1,81 +1,60 @@
-import { getDataFromStorage, setDataToStorage } from './../../utils';
+import { setOrUpdateUserCompanies } from './../../firebase/firebase.utils';
 
-export const alreadyJoined = ({ userId, newEmployees }) => newEmployees.filter((employee) => (employee.uid === userId));
+export const alreadyJoined = ({ userId, employees }) => employees.filter((employee) => (employee.uid === userId));
 
-export const joinOrLeaveCompany = ({ currentUser, updateEmployees, id, newEmployees }) => {
-  const data = alreadyJoined({ userId: currentUser.id, newEmployees });
+export const joinOrLeaveCompany = async (props) => {
+  const { currentUser, updateEmployees, company, employees, companies, indexOfCompany, updateCompanies } = props;
+  const data = await alreadyJoined({ userId: currentUser.id, employees });
 
-  (data.length === 0 || ((data[0].endDate) && !(data[0].isCurrentEmployee))) ?
-    joinCompany({ currentUser, updateEmployees, id, newEmployees, employee: data[0] || null }) :
-    leaveCompany({ currentUser, updateEmployees, id })
+  (data.length === 0 || ((data[0].endDate) && !(data[0].isCurrentEmployee)))
+    ? await joinCompany({ ...props, isAlreadyJoined: data[0] || null })
+    : await leaveCompany({ currentUser, employees, updateEmployees, company, companies, indexOfCompany, updateCompanies });
 }
 
-export const joinCompany = ({ currentUser: { id: userId, displayName, email }, updateEmployees, id, employee }) => {
-  const companies = getDataFromStorage('companies');
-  const newCompanies = companies.map(company => {
-    let { id: companyId, employees } = company;
-    if (companyId === id) {
-      if (!employee) {
-        const updatedEmployees = [...employees, { uid: userId, displayName: displayName, email: email, joinDate: new Date(Date.now()).toLocaleString().split(',')[0], endDate: null, isCurrentEmployee: true }]
-        company.employees = updatedEmployees
-      } else {
-        const employeeIndex = company.employees.findIndex((eachEmployee) => eachEmployee.uid === employee.uid);
-        company.employees[employeeIndex].endDate = null;
-        company.employees[employeeIndex].isCurrentEmployee = true;
-      }
-      updateEmployees(company.employees);
-      updateUserCompanies({ userId, company });
-    };
-    return company;
-  });
-  setDataToStorage('companies', newCompanies);
-};
-
-export const leaveCompany = ({ currentUser: { id: userId }, updateEmployees, id }) => {
-  const companies = getDataFromStorage('companies');
-
-  const newCompanies = companies.map(company => {
-    const { id: companyId } = company;
-    if (companyId === id) {
-      const updatedEmployees = company.employees.map(employee => {
-        if (employee.uid === userId) {
-          const updatedEmployee = { ...employee, endDate: new Date(Date.now()).toLocaleString().split(',')[0], isCurrentEmployee: false };
-          employee = updatedEmployee;
-        }
-        return employee;
-      });
-      company.employees = updatedEmployees;
-      updateEmployees(updatedEmployees);
-      updateUserCompanies({ userId, company });
-    };
-    return company;
-  });
-
-  setDataToStorage('companies', newCompanies);
-};
-
-const updateUserCompanies = ({ userId, company }) => {
-  const userCompanies = getDataFromStorage('userCompanies') || {};
-  if (userCompanies[userId]) {
-    userCompanies[userId][company.id] = company;
+export const joinCompany = async ({ currentUser: { id: userId, displayName, email }, updateEmployees, employees, isAlreadyJoined, company: { id: companyId, name }, updateCompanies }) => {
+  let userCompany, updatedEmployees;
+  if (!isAlreadyJoined) {
+    const joinDate = new Date(Date.now()).toLocaleString().split(',')[0];
+    const endDate = null;
+    updatedEmployees = [...employees, { uid: userId, displayName, email, joinDate, endDate, isCurrentEmployee: true }];
+    userCompany = { companyId, name, joinDate, endDate, userId };
   } else {
-    userCompanies[userId] = {};
-    userCompanies[userId][company.id] = company;
-  }
-  setDataToStorage('userCompanies', userCompanies);
+    updatedEmployees = employees.map((employee) => {
+      if (employee.uid === userId) {
+        userCompany = { companyId, name, joinDate: employee.joinDate, endDate: null, userId };
+        return { ...employee, endDate: null, isCurrentEmployee: true }
+      }
+      else return employee;
+    });
+  };
+
+  await setOrUpdateUserCompanies(userCompany);
+  await updateEmployees(updatedEmployees);
 };
 
-export const countDuration = ({ companyId, userId }) => {
-  const companies = getDataFromStorage('companies') || {};
-  const companyDetails = companies.find(({ id }) => id === companyId);
-  const employeeDetails = companyDetails.employees.find(({ uid }) => uid === userId);
+export const leaveCompany = async ({ currentUser: { id: userId }, employees, updateEmployees, company: { id: companyId, name }, updateCompanies }) => {
+  let userCompany;
+  const updatedEmployees = employees.map(employee => {
+    if (employee.uid === userId) {
+      const endDate = new Date(Date.now()).toLocaleString().split(',')[0];
+      userCompany = { companyId, name, joinDate: employee.joinDate, endDate, userId };
+      return { ...employee, endDate, isCurrentEmployee: false }
+    }
+    return employee;
+  }
+  );
+  await setOrUpdateUserCompanies(userCompany);
+  await updateEmployees(updatedEmployees);
+};
+
+export const countDuration = ({ companyId, userCompanies }) => {
+  const cardCompany = userCompanies.find(({ id }) => (id === companyId));
   let diffDays = 0;
-  if (employeeDetails) {
-    const date1 = new Date(employeeDetails.joinDate);
-    const date2 = (employeeDetails.endDate && new Date(employeeDetails.endDate)) || new Date();
+  if (cardCompany) {
+    const date1 = new Date(cardCompany.joinDate);
+    const date2 = (cardCompany.endDate && new Date(cardCompany.endDate)) || new Date();
     let timeDiff = Math.abs(date2.getTime() - date1.getTime());
     diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   }
   return diffDays;
 }
-

@@ -12,7 +12,6 @@ const config = {
   appId: "1:383742723416:web:88bba0f8782dd440ea112d"
 };
 
-
 firebase.initializeApp(config);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -43,7 +42,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 // Method to add documents to collection
 export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
   const collectionRef = firestore.collection(collectionKey);
-  console.log(objectsToAdd);
   const batch = firestore.batch();
   objectsToAdd.forEach(obj => {
     const newDocRef = collectionRef.doc();
@@ -53,9 +51,37 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
   await batch.commit();
 };
 
-export const convertCollectionsSnapshotToMap = (collections) => collections.docs.map(doc => {
-  return { ...doc.data(), id: doc.id }
-});
+export const convertCompaniesSnapshotToMap = (companies) => companies.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
+export const updateCompanies = async ({ id, employees }) => {
+  await firestore
+    .collection('companies')
+    .doc(id)
+    .update({ employees })
+    .catch((error) => alert(error));
+}
+
+export const setOrUpdateUserCompanies = async ({ companyId: id, name, joinDate, endDate, userId }) => await firestore
+  .collection('history')
+  .doc(userId)
+  .set({
+    [id]: {
+      name,
+      joinDate,
+      endDate
+    }
+  }, {
+    merge: true
+  })
+  .catch((error) => alert(error));
+
+export const fetchUserCompanies = async ({ userId }) => {
+  const userCompanies = await firestore
+    .collection('history')
+    .doc(userId)
+    .get();
+  return userCompanies.data();
+}
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

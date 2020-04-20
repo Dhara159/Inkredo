@@ -1,16 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import CardList from './../../components/CardList/CardList';
-import { getDataFromStorage } from '../../utils';
-import { formatCompanyDetails } from './Employee.utils';
 
 import { Title, H1Title } from './Employee.styles';
 
-const Employee = ({ currentUser }) => {
-
-  const userCompanies = getDataFromStorage('userCompanies');
-  const companies = currentUser && formatCompanyDetails({ userCompanies, userId: currentUser.id });
-
+const Employee = ({ companies }) => {
   return (<div className="employee">
     <Title>
       <H1Title>{companies.length > 0 ? 'MY COMPANIES' : 'YOU ARE JOBELESS! JUST LIKE ME :)'}</H1Title>
@@ -19,4 +13,4 @@ const Employee = ({ currentUser }) => {
   </div>);
 };
 
-export default Employee;
+export default memo(Employee);

@@ -1,9 +1,9 @@
-import { convertCollectionsSnapshotToMap } from './../../firebase/firebase.utils';
+import { convertCompaniesSnapshotToMap } from './../../firebase/firebase.utils';
 
 export const fetchCompanies = async (firestore) => {
-  const collectionRef = firestore.collection('companies');
+  const companiesRef = firestore.collection('companies');
 
-  const snapShot = await collectionRef.get().catch(error => alert(error));
-  const collectionsMap = convertCollectionsSnapshotToMap(snapShot);
+  const snapShot = await companiesRef.get().catch(error => alert(error));
+  const collectionsMap = convertCompaniesSnapshotToMap(snapShot);
   return collectionsMap;
 }

@@ -4,6 +4,7 @@ import Home from './Home';
 import Spinner from './../../components/Spinner/Spinner';
 import { firestore } from './../../firebase/firebase.utils';
 import { fetchCompanies } from './Home.utils';
+import CompaniesContext from '../../contexts/Companies/Companies';
 
 const HomeContainer = () => {
   const [companies, setCompanies] = useState([]);
@@ -14,10 +15,12 @@ const HomeContainer = () => {
       setCompanies(companies);
     };
     fectchCompanies();
-  }, [companies.data]);
+  }, []);
 
   return companies ? (
-    <Home companies={companies} />
+    <CompaniesContext.Provider value={companies}>
+      <Home companies={companies} />
+    </CompaniesContext.Provider>
   ) : <Spinner />
 };
 
