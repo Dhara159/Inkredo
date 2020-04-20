@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 import Home from './Home';
 import Spinner from './../../components/Spinner/Spinner';
+import { firestore } from './../../firebase/firebase.utils';
+import { fetchCompanies } from './Home.utils';
 
 const HomeContainer = () => {
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
     const fectchCompanies = async () => {
-      const companies = await axios.get('https://my.api.mockaroo.com/companies?key=9707c930');
-      setCompanies(companies.data);
+      const companies = await fetchCompanies(firestore);
+      setCompanies(companies);
     };
     fectchCompanies();
-  }, []);
+  }, [companies.data]);
 
   return companies ? (
     <Home companies={companies} />

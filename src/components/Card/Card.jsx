@@ -20,8 +20,15 @@ const Card = ({ company, history, match, userCompany }) => {
       state: {
         companyId: id,
         title: 'EMPLOYEES',
-        headers: ["id", "name", "email", "join date", "end date", "past employee"],
-        data
+        data,
+        headerMapping: {
+          "id": "uid",
+          "name": "displayName",
+          "email": "email",
+          "join date": "joinDate",
+          "end date": "endDate",
+          "current employee": "isCurrentEmployee"
+        }
       }
     });
     event.stopPropagation();

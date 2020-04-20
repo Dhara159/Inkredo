@@ -3,14 +3,15 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-  apiKey: 'AIzaSyCdHT-AYHXjF7wOrfAchX4PIm3cSj5tn14',
-  authDomain: 'crwn-db.firebaseapp.com',
-  databaseURL: 'https://crwn-db.firebaseio.com',
-  projectId: 'crwn-db',
-  storageBucket: 'crwn-db.appspot.com',
-  messagingSenderId: '850995411664',
-  appId: '1:850995411664:web:7ddc01d597846f65'
+  apiKey: "AIzaSyBDqStIxQMpAODYRD19kzLWy8gv8K_2-ac",
+  authDomain: "crwn-db-f6657.firebaseapp.com",
+  databaseURL: "https://crwn-db-f6657.firebaseio.com",
+  projectId: "crwn-db-f6657",
+  storageBucket: "crwn-db-f6657.appspot.com",
+  messagingSenderId: "383742723416",
+  appId: "1:383742723416:web:88bba0f8782dd440ea112d"
 };
+
 
 firebase.initializeApp(config);
 
@@ -38,6 +39,23 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   return userRef;
 };
+
+// Method to add documents to collection
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  console.log(objectsToAdd);
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collections) => collections.docs.map(doc => {
+  return { ...doc.data(), id: doc.id }
+});
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 
 import CardList from './../../components/CardList/CardList';
 
@@ -19,4 +19,4 @@ const Home = ({ companies }) => {
   )
 };
 
-export default Home;
+export default memo(Home);
