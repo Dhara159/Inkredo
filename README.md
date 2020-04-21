@@ -18,5 +18,6 @@
 
 ### Notes:
 1) Join company button will be only displayed if user is logged in
-2) There might seem some issue with the behaviour with the web-app, but it's just because of the way I have mocked the response of API. In the normal flow, It would work fine. Giving a try to change the method was an option but It was little time-consuming.
-3) There is limit of 200 requests per day. IF you face any issue, please contact me. I will fix it within 5 minutes.
+2) ~~~There might seem some issue with the behaviour with the web-app, but it's just because of the way I have mocked the response of API. In the normal flow, It would work fine. Giving a try to change the method was an option but It was little time-consuming.~~~ I have implemented normal flow using firestore. You can check it on live application.
+3) ~~~There is limit of 200 requests per day. IF you face any issue, please contact me. I will fix it within 5 minutes.~~~ As I have moved database to firebase, now we are using firebase methods to get and set data.
+
